@@ -1,12 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <title>User Enrollment</title>
 </head>
 <body>
-    <h1>Hello World!</h1>
+  <div id="setup">
+    <h1>Hey Guys</h1>
+    <label for="userCount">How many users to enroll?</label>
+    <input type="number" id="userCount" min="1" required>
+    <button id="startBtn">Start Enrollment</button>
+  </div>
+
+  <form id="userForm" style="display:none;">
+    <h3 id="userNumber"></h3>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required />
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required />
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="result" style="display:none;">
+    <h3>All Enrolled Users:</h3>
+    <ul id="userList"></ul>
+  </div>
+
+  <script>
+    let totalUsers = 0;
+    let currentUser = 0;
+    let users = [];
+
+    document.getElementById('startBtn').onclick = function() {
+      totalUsers = parseInt(document.getElementById('userCount').value, 10);
+      if (isNaN(totalUsers) || totalUsers < 1) {
+        alert('Please enter a valid number of users.');
+        return;
+      }
+      document.getElementById('setup').style.display = 'none';
+      document.getElementById('userForm').style.display = '';
+      currentUser = 1;
+      document.getElementById('userNumber').textContent = `User ${currentUser} of ${totalUsers}`;
+    };
+
+    document.getElementById('userForm').onsubmit = function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      users.push({ name, email });
+
+      if (currentUser < totalUsers) {
+        currentUser++;
+        document.getElementById('userNumber').textContent = `User ${currentUser} of ${totalUsers}`;
+        document.getElementById('userForm').reset();
+      } else {
+        document.getElementById('userForm').style.display = 'none';
+        document.getElementById('result').style.display = '';
+        const userList = document.getElementById('userList');
+        userList.innerHTML = '';
+        users.forEach(function(user, idx) {
+          const li = document.createElement('li');
+          li.textContent = `#${idx + 1}: ${user.name} (${user.email})`;
+          userList.appendChild(li);
+        });
+      }
+    };
+  </script>
 </body>
 </html>
