@@ -6,7 +6,6 @@
 </head>
 <body>
   <div id="setup">
-    <h1>Hey Guys</h1>
     <label for="userCount">How many users to enroll?</label>
     <input type="number" id="userCount" min="1" required>
     <button id="startBtn">Start Enrollment</button>
@@ -19,6 +18,9 @@
 
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required />
+
+    <label for="value">Which value?</label>
+    <input type="text" id="value" name="value" required />
 
     <button type="submit">Submit</button>
   </form>
@@ -49,7 +51,8 @@
       e.preventDefault();
       const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
-      users.push({ name, email });
+      const value = document.getElementById('value').value;
+      users.push({ name, email, value });
 
       if (currentUser < totalUsers) {
         currentUser++;
@@ -62,7 +65,7 @@
         userList.innerHTML = '';
         users.forEach(function(user, idx) {
           const li = document.createElement('li');
-          li.textContent = `#${idx + 1}: ${user.name} (${user.email})`;
+          li.textContent = `#${idx + 1}: ${user.name} (${user.email}) - Value: ${user.value}`;
           userList.appendChild(li);
         });
       }
